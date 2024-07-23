@@ -28,3 +28,5 @@ gcc
 patch
 jq
 vim
+nano
+parted
