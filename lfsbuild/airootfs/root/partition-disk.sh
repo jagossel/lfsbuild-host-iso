@@ -50,10 +50,3 @@ echo "Formatting partitions..."
 mkfs.vfat ${1}1
 mkfs.ext4 ${1}2
 mkswap ${1}3
-
-if [ ! -d "/mnt/lfs" ]; then mkdir /mnt/lfs; fi
-mount ${1}2 /mnt/lfs
-mkdir /mnt/lfs/boot
-mount ${1}1 /mnt/lfs/boot
-swapon ${1}3
-
