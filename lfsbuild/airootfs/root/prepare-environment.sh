@@ -7,6 +7,9 @@ bail () {
 
 [ "$#" -eq 1 ] || bail "Drive device path required."
 
+# Export the LFS environment variable
+export LFS=/mnt/lfs
+
 # Define the minimum disk size
 MinimumSizeMB=10240
 
@@ -53,6 +56,20 @@ parted --script $1 \
 	mkpart primary ext4 ${RootStart}MiB ${RootEnd}MiB \
 	mkpart primary linux-swap ${SwapStart}MiB ${SwapEnd}MiB
 
+BootPartitionPath="${1}1"
+BootPartitionName=$(basename $BootPartitionPath)
+
+RootPartitionPath="${1}2"
+RootPartitionName=$(basename $RootPartitionPath)
+
+SwapPartitionPath="${1}3"
+SwapPartitionName=$(basename $SwapPartitionPath)
+
+echo "Verifying partitions on $1..."
+(! lsblk $BootPartitionPath|grep -wq $BootPartitionName)&& bail "Failed to create the boot partition."
+(! lsblk $RootPartitionPath|grep -wq $RootPartitionName)&& bail "Failed to create the root partition."
+(! lsblk $SwapPartitionPath|grep -wq $SwapPartitionName)&& bail "Failed to create the swap partition."
+
 # Format the drive
 echo "Formatting partitions..."
 mkfs.vfat -v ${1}1
@@ -60,14 +77,12 @@ mkfs.ext4 -v ${1}2
 mkswap --verbose ${1}3
 
 # Prepare the mounting directories
-if [ ! -d "/mnt/lfs" ]; then mkdir -v /mnt/lfs; fi
-mount -v ${1}2 /mnt/lfs
-mkdir -v /mnt/lfs/boot
-mount -v ${1}1 /mnt/lfs/boot
-swapon -v ${1}3
+[ ! -d "$LFS" ]; mkdir -v $LFS
+mount -v ${1}2 $LFS
 
-# Export the LFS environment variable
-export LFS=/mnt/lfs
+mkdir -v $LFS/boot
+mount -v ${1}1 $LFS/boot
+swapon -v ${1}3
 
 # Creating the required folder structure
 for i in etc var usr tools; do
