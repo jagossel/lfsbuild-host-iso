@@ -27,8 +27,14 @@ parted --script $1 \
 	mklabel msdos \
 	mkpart primary fat32 1MiB ${DiskSizeMB}MiB
 
+SourcePartitionPath="${1}1"
+SourcePartitionName=$(basename $SourcePartitionPath)
+
+echo "Verifying partition on $1..."
+(! lsblk $SourcePartitionPath|grep -wq $SourcePartitionName)&& bail "Failed to create the source partition."
+
 # Format the drive
-echo "Formatting partition..."
+echo "Formatting source partition..."
 mkfs.vfat -v ${1}1
 
 # Prepare the mounting directories
