@@ -1,0 +1,8 @@
+PatchName,PatchUrl,PatchMd5Hash
+Bash Upstream Fixes Patch,https://www.linuxfromscratch.org/patches/lfs/12.1/bash-5.2.21-upstream_fixes-1.patch,2d1691a629c558e894dbb78ee6bf34ef
+Bzip2 Documentation Patch,https://www.linuxfromscratch.org/patches/lfs/12.1/bzip2-1.0.8-install_docs-1.patch,6a5ac7e89b791aae556de0f745916f7f
+Coreutils Internationalization Fixes Patch,https://www.linuxfromscratch.org/patches/lfs/12.1/coreutils-9.4-i18n-1.patch,cca7dc8c73147444e77bc45d210229bb
+Glibc FHS Patch,https://www.linuxfromscratch.org/patches/lfs/12.1/glibc-2.39-fhs-1.patch,9a5997c3452909b1769918c759eff8a2
+Kbd Backspace/Delete Fix Patch,https://www.linuxfromscratch.org/patches/lfs/12.1/kbd-2.6.4-backspace-1.patch,f75cca16a38da6caa7d52151f7136895
+Readline Upstream Fix Patch,https://www.linuxfromscratch.org/patches/lfs/12.1/readline-8.2-upstream_fixes-3.patch,9ed497b6cb8adcb8dbda9dee9ebce791
+Sysvinit Consolidated Patch,https://www.linuxfromscratch.org/patches/lfs/12.1/sysvinit-3.08-consolidated-1.patch,17ffccbb8e18c39e8cedc32046f3a475

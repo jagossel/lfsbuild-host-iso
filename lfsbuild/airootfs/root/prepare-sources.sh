@@ -46,8 +46,14 @@ if [ ! -d "$LFS_SRC" ]; then mkdir -v $LFS_SRC; fi
 mount -v ${1}1 $LFS_SRC
 
 PackageSourcePath="$ScriptRootPath/package-source.csv"
+PatchSourcePath="$ScriptRootPath/patch-source.csv"
+
 if [ ! -f "$PackageSourcePath" ]; then
 	bail "Cannot find the packages source data, $PackageSourcePath."
+fi
+
+if [ ! -f "$PatchSourcePath" ]; then
+	bail "Cannot find the packages patch data, $PatchSourcePath."
 fi
 
 tail -n +2 $PackageSourcePath | while IFS="," read -r PackageName PackageVersion PackageSourceUrl PackageSourceMd5Hash
@@ -57,8 +63,21 @@ do
 	echo "Downloading $PackageName ($PackageVersion) from $PackageSourceUrl to $PackagePath..."
 	wget --output-document=$PackagePath $PackageSourceUrl
 	echo "Verifying $PackageName with $PackageSourceMd5Hash..."
-	HashCheck=$(md5sum $PackagePath | grep -Po [0-9a-f]{32} )
+	HashCheck=$(md5sum $PackagePath | grep -Po [0-9a-f]{32})
 	if [ "$PackageSourceMd5Hash" != "$HashCheck" ]; then
-		bail "$PackageName is not valid, expected $PackageSourceMd5Hash), but got $HashCheck."
+		bail "$PackageName is not valid, expected $PackageSourceMd5Hash, but got $HashCheck."
+	fi
+done
+
+tail -n +2 $PatchSourcePath | while IFS="," read -r PatchName PatchUrl PatchMd5Hash
+do
+	PatchFileName=$(basename $PatchUrl)
+	PatchPath="$LFS_SRC/$PatchFileName"
+	echo "Downloading $PatchFileName from $PatchUrl to $PatchPath..."
+	wget --output-document=$PatchPath $PatchUrl
+	echo "Verifying $PatchName with $PatchMd5Hash..."
+	HashCheck=$(md5sum $PatchPath|grep -Po [0-9a-f]{32})
+	if [ "$PatchMd5Hash" != "$HashCheck" ]; then
+		bail "$PatchName is not valid, expected $PatchMd5Hash, but got $HashCheck."
 	fi
 done
