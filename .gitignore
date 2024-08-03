@@ -1,0 +1,3 @@
+lfsbuild/airootfs/root/sources
+src/*.log
+src/data/config.json

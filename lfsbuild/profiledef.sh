@@ -19,9 +19,6 @@ bootstrap_tarball_compression=(zstd -c -T0 --long -19)
 file_permissions=(
   ["/etc/shadow"]="0:0:400"
   ["/etc/gshadow"]="0:0:400"
-  ["/root/patch-source.csv"]="0:0:440"
-  ["/root/patch-source.csv"]="0:0:440"
   ["/root/version-check.sh"]="0:0:550"
-  ["/root/prepare-sources.sh"]="0:0:550"
   ["/root/prepare-environment.sh"]="0:0:550"
 )
