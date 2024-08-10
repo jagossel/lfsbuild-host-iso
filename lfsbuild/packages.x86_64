@@ -28,3 +28,13 @@ gcc
 patch
 jq
 vim
+nano
+parted
+dosfstools
+curl
+wget
+links
+lynx
+wireless-regdb
+wireless_tools
+wpa_supplicant
